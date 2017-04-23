@@ -7,9 +7,6 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -52,13 +49,27 @@
     </div>
   </div>
   <div id="weatherView">
-    <p>Temperature: <span data-bind="text: temp"></span></p>
-    <p>Humidity: <span data-bind="text: humidity"></span></P>
-    <span data-bind="text: description"></span>
+    <p class="weather-title">
+      Location:
+      <span class="weather-result" data-bind="text: location"></span>
+    </p>
+    <p class="weather-title">
+      Temperature:
+      <span class="weather-result" data-bind="text: temp"></span>
+    </p>
+    <p class="weather-title">
+      Humidity:
+      <span class="weather-result" data-bind="text: humidity"></span>
+    </p>
+    <img data-bind="attr: {src: url}" />
+    <span class="weather-description" data-bind="text: description"></span>
   </div>
 
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw3Ftg0e0a9ku5Pk8GlfJYtwjD9vC3SfQ"
+  onerror="alert('Google Maps API laoding failed! Some features would not work so we highly recommend to refresh the browser to prevent the problem. If the error persists then report us!')"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/libs/knockout-3.4.1.debug.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw3Ftg0e0a9ku5Pk8GlfJYtwjD9vC3SfQ"></script>
   <script src="js/models.js"></script>
   <script src="js/bindings.js"></script>
   <script src="js/viewmodel.js"></script>

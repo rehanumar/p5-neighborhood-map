@@ -68,24 +68,27 @@ var markersModel = [
 
 var googleMarkersModel = [];
 
-function weatherModel(latitude, longitude) {
+function weatherModel(latitude, longitude, location) {
   $.ajax({
-    url: "http://api.openweathermap.org/data/2.5/weather",
-    type:'get',
+    url: 'https://api.apixu.com/v1/forecast.json',
+    type: 'get',
     crossDomain: true,
-    data: { lat: latitude, lon: longitude, APPID:"278fff1002fef1f3de7085c4a4bb4e14"},
-    dataType : "json",
+    data: {key: 'ee37d13861e240fab5095937171905', q: latitude, longitude},
+    dataType: 'json',
     success: function (response) {
       try {
-          weatherViewModel.temp(response.main.temp);
-          weatherViewModel.humidity(response.main.humidity);
-          weatherViewModel.description(response.weather[0].description);
+          weatherViewModel.location(location);
+          weatherViewModel.temp(response.current.temp_c + ' \u2103');
+          weatherViewModel.humidity(response.current.humidity);
+          weatherViewModel.description(response.current.condition.text);
+          weatherViewModel.url(response.current.condition.icon);
       } catch(err) {
-          console.log('json structure changed for this api!');
+          alert('json structure changed for this api!');
       }
     },
     error: function (err) {
+        alert('loading weather data failed! refresh the page to resolve it! if the problem persists then report it at rehanumardogar[at]gmail.com');
         console.log(err);
     }
-  })
+  });
 }

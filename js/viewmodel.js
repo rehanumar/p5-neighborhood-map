@@ -1,8 +1,9 @@
-function appViewModel() {
+function AppViewModel() {
     var self = this;
     self.visibleMarkers = ko.observableArray(markersModel);
     // calling the weatherModel to display the weather information of first marker.
-    weatherModel(markersModel[0].pos.lat, markersModel[0].pos.lng);
+    var firstMarker = self.visibleMarkers()[0];
+    // weatherModel(firstMarker.pos.lat, firstMarker.pos.lng, firstMarker.name);
 
     self.filterResults = function (formElement) {
       ko.utils.arrayForEach(self.visibleMarkers(), function (marker) {
@@ -26,11 +27,13 @@ function appViewModel() {
 }
 
 var weatherViewModel = {
+  location: ko.observable(''),
   temp: ko.observable(''),
   humidity: ko.observable(''),
-  description: ko.observable('')
+  description: ko.observable(''),
+  url: ko.observable('')
 };
 
 
-ko.applyBindings(new appViewModel(), document.getElementById('mapView'));
+ko.applyBindings(new AppViewModel(), document.getElementById('mapView'));
 ko.applyBindings(weatherViewModel, document.getElementById('weatherView'));

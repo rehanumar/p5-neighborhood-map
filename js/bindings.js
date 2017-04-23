@@ -14,14 +14,31 @@ ko.bindingHandlers.map = {
             isOverlayVisible: false
           });
           googleMarker.infoWindow = new google.maps.InfoWindow();
+
           googleMarkersModel.push(googleMarker);
-          googleMarker.addListener('click', function (googleMarker) {
-            return function () {
-              var markerPos = {lat: googleMarker.position.lat(), lng: googleMarker.position.lng()};
-              weatherModel(googleMarker.position.lat(), googleMarker.position.lng());
-              populateInfoWindow(mapObj.googleMap, googleMarker);
-              setTimeout(getStreetView.bind(markerPos),100);
+
+          function toggleBounce(marker) {
+            if (marker.getAnimation() || marker.getAnimation() !== undefined) {
+              marker.setAnimation(null);
+            } else {
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+              setTimeout(function(){
+                toggleBounce(marker);
+              }, 750);
             }
+          }
+          
+          function markerClicked(googleMarker) {
+            var markerPos = {lat: googleMarker.position.lat(), lng: googleMarker.position.lng()};
+            // weatherModel(googleMarker.position.lat(), googleMarker.position.lng(), googleMarker.title);
+            toggleBounce(googleMarker);
+            mapObj.googleMap.setCenter(markerPos);
+            populateInfoWindow(mapObj.googleMap, googleMarker);
+            setTimeout(getStreetView.bind(markerPos),100);
+          }
+
+          googleMarker.addListener('click', function (googleMarker) {
+            markerClicked(googleMarker);
           }(googleMarker));
         });
 
@@ -51,11 +68,10 @@ ko.bindingHandlers.map = {
               });
             panorama.setVisible(true);
           } else {
-            document.getElementById('pano').innerText = 'street view is not available for this location!'
+            document.getElementById('pano').innerText = 'street view is not available for this location!';
           }
         }
       }
-
     },
     update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
       var mapObj = ko.unwrap(valueAccessor());
