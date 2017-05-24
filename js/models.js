@@ -66,7 +66,10 @@ var markersModel = [
   }
 ];
 
+// google map models whose data is dynamically added through initMap function.
 var googleMarkersModel = [];
+var googleMap = {};
+var infoWindow = {};
 
 function weatherModel(latitude, longitude, location) {
   $.ajax({
