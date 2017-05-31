@@ -1,6 +1,7 @@
 function AppViewModel() {
     var self = this;
     self.visibleMarkers = ko.observableArray(markersModel);
+    self.googleMarkers = ko.observableArray(googleMarkersModel);
     self.searchTerm = ko.observable('');
     // calling the weatherModel to display the weather information of first marker.
     var firstMarker = self.visibleMarkers()[0];
@@ -8,16 +9,23 @@ function AppViewModel() {
 
     self.filterResults = ko.computed(function() {
       if(!self.searchTerm()) {
+        ko.utils.arrayFilter(self.googleMarkers(), function (marker) {
+          marker.setMap(googleMap);
+        });
         return self.visibleMarkers();
       } else {
+        ko.utils.arrayFilter(self.googleMarkers(), function (marker) {
+          if(ko.utils.stringStartsWith(marker.title.toLowerCase(), self.searchTerm().toLowerCase())) {
+            marker.setMap(googleMap);
+          } else {
+            marker.setMap(null);
+          }
+        });
         return ko.utils.arrayFilter(self.visibleMarkers(), function(marker) {
-          return ko.utils.stringStartsWith(marker.name.toLowerCase(), self.searchTerm());
+          return ko.utils.stringStartsWith(marker.name.toLowerCase(), self.searchTerm().toLowerCase());
         });
       }
     });
-
-    self.googleMap = ko.observable(googleMap);
-    self.googleMarkers = ko.observableArray(googleMarkersModel);
 
     self.showMarkerInfo = function () {
       var $index = this;
