@@ -1,9 +1,10 @@
 ko.bindingHandlers.map = {
     update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      var filteredMarkers = ko.utils.unwrapObservable(valueAccessor());
       var filterGoogleMarkers = [];
 
       ko.utils.arrayFilter(viewModel.googleMarkers(), function(googleMarker){
-          ko.utils.arrayForEach(viewModel.filterResults(), function(filterMarker){
+          ko.utils.arrayForEach(filteredMarkers, function(filterMarker){
             if(filterMarker.id === googleMarker.id) {
               filterGoogleMarkers.push(googleMarker);
             }
