@@ -31,7 +31,7 @@
             </section>
             <section id="collapse1" class="panel-collapse collapse in">
               <ul class="list-group" data-bind="foreach: filterResults">
-                <li class="list-group-item" data-bind="visible: isVisible">
+                <li class="list-group-item">
                   <a href="#" data-bind="text: name, click: $parent.showMarkerInfo.bind($index())"></a>
                 </li>
               </ul>
@@ -40,7 +40,7 @@
         </section>
       </aside>
       <section class="col-md-9 no-padding">
-        <div class="map" id="map" data-bind="map: googleMarkers"></div>
+        <div class="map" id="map" data-bind="map: filterResults"></div>
       </section>
     </section>
   </main>
@@ -67,6 +67,7 @@
   <script src="js/models.js"></script>
   <script src="js/bindings.js"></script>
   <script src="js/viewmodel.js"></script>
+  <script src="js/app.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw3Ftg0e0a9ku5Pk8GlfJYtwjD9vC3SfQ&callback=initMap"
   onerror="alert('Google Maps API laoding failed! Some features would not work so we highly recommend to refresh the browser to prevent the problem. If the error persists then report us!')"></script>
 </body>
