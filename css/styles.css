@@ -26,6 +26,21 @@ a{
   opacity: 0.6;
 }
 
+.weather-description {
+  vertical-align: middle;
+  font-size: 19px;
+}
+
+.weather-title {
+  color: orange;
+  font-weight: 600;
+}
+
+.weather-result {
+  color: #fff;
+  font-weight: 100;
+}
+
 #pano {
   width: 250px;
   height: 250px;

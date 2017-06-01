@@ -7,60 +7,68 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <div class="container-fluid" id="mapView">
-    <div class="row">
-      <div class="col-md-3 no-padding">
-        <div class="panel-group">
-          <div class="panel panel-default">
-            <div class="panel-heading">
+  <main class="container-fluid" id="mapView">
+    <section class="row">
+      <aside class="col-md-3 no-padding">
+        <section class="panel-group">
+          <section class="panel panel-default">
+            <section class="panel-heading">
               <h4 class="panel-title">
-                <div class="row">
-                  <div class="col-xs-10 vcenter">
-                    <div class="form-group">
-                      <form data-bind="submit: filterResults">
-                        <input type="text" class="form-control" name="searchTerm" placeholder="Search">
-                      </form>
-                    </div>
-                  </div><!--
-              --><div class="col-xs-2 vcenter">
+                <section class="row">
+                  <section class="col-xs-10 vcenter">
+                    <input type="text" data-bind="textInput: searchTerm" class="form-control" placeholder="Search">
+                  </section><!--
+              --><section class="col-xs-2 vcenter">
                     <a data-toggle="collapse" href="#collapse1">
                       <span class="glyphicon glyphicon-menu-hamburger"></span>
                     </a>
-                  </div>
-                </div>
+                  </section>
+                </section>
               </h4>
-            </div>
-            <div id="collapse1" class="panel-collapse collapse in">
-              <ul class="list-group" data-bind="foreach: visibleMarkers">
-                <li class="list-group-item" data-bind="visible: isVisible">
-                  <a href="#" data-bind="text: name, click: $parent.removeOthers"></a>
+            </section>
+            <section id="collapse1" class="panel-collapse collapse in">
+              <ul class="list-group" data-bind="foreach: filterResults">
+                <li class="list-group-item">
+                  <a href="#" data-bind="text: name, click: $parent.showMarkerInfo.bind($index())"></a>
                 </li>
               </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-9 no-padding">
-        <div class="map" data-bind="map: visibleMarkers"></div>
-      </div>
-    </div>
-  </div>
-  <div id="weatherView">
-    <p>Temperature: <span data-bind="text: temp"></span></p>
-    <p>Humidity: <span data-bind="text: humidity"></span></P>
-    <span data-bind="text: description"></span>
-  </div>
+            </section>
+          </section>
+        </section>
+      </aside>
+      <section class="col-md-9 no-padding">
+        <div class="map" id="map" data-bind="map: filterResults"></div>
+      </section>
+    </section>
+  </main>
+  <section id="weatherView">
+    <p class="weather-title">
+      Location:
+      <span class="weather-result" data-bind="text: location"></span>
+    </p>
+    <p class="weather-title">
+      Temperature:
+      <span class="weather-result" data-bind="text: temp"></span>
+    </p>
+    <p class="weather-title">
+      Humidity:
+      <span class="weather-result" data-bind="text: humidity"></span>
+    </p>
+    <img data-bind="attr: {src: url}" />
+    <span class="weather-description" data-bind="text: description"></span>
+  </section>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="js/libs/knockout-3.4.1.debug.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw3Ftg0e0a9ku5Pk8GlfJYtwjD9vC3SfQ"></script>
   <script src="js/models.js"></script>
   <script src="js/bindings.js"></script>
   <script src="js/viewmodel.js"></script>
+  <script src="js/app.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw3Ftg0e0a9ku5Pk8GlfJYtwjD9vC3SfQ&callback=initMap"
+  onerror="alert('Google Maps API laoding failed! Some features would not work so we highly recommend to refresh the browser to prevent the problem. If the error persists then report us!')"></script>
 </body>
 </html>

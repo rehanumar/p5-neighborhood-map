@@ -1,36 +1,47 @@
-function appViewModel() {
+function AppViewModel() {
     var self = this;
     self.visibleMarkers = ko.observableArray(markersModel);
-    // calling the weatherModel to display the weather information of first marker.
-    weatherModel(markersModel[0].pos.lat, markersModel[0].pos.lng);
+    self.googleMarkers = ko.observableArray(googleMarkersModel);
+    self.searchTerm = ko.observable('');
 
-    self.filterResults = function (formElement) {
-      ko.utils.arrayForEach(self.visibleMarkers(), function (marker) {
-        if(marker.name.toLowerCase().indexOf(formElement.searchTerm.value.toLowerCase()) === -1) {
-          marker.isVisible(false);
-        } else {
-          marker.isVisible(true);
-        }
-      });
-    };
+    /* calling the weatherModel to display the weather information of first
+    * marker when the app is firstly initialized.
+    */
+    var firstMarker = self.visibleMarkers()[0];
+    weatherModel(firstMarker.pos.lat, firstMarker.pos.lng, firstMarker.name);
 
-    self.removeOthers = function (clickedMarker) {
-      ko.utils.arrayForEach(self.visibleMarkers(), function (marker) {
-        if(marker.name !== clickedMarker.name) {
-          marker.isVisible(false);
-        } else {
-          marker.isVisible(true);
+    self.filterResults = ko.computed(function() {
+      if(!self.searchTerm()) {
+        return self.visibleMarkers();
+      } else {
+        return ko.utils.arrayFilter(self.visibleMarkers(), function(marker) {
+          return ko.utils.stringStartsWith(marker.name.toLowerCase(), self.searchTerm().toLowerCase());
+        });
+      }
+    });
+
+    self.showMarkerInfo = function () {
+      var $index = this;
+      /* iterating over the array fore figuring out exactly which marker is clicked.
+      * Important for scenario where filterResults array have one value and it
+      * is other then the first value of visibleMarkers array.
+      */
+      ko.utils.arrayForEach(self.googleMarkers(), function (marker) {
+        if(self.filterResults()[$index].id === marker.id) {
+            google.maps.event.trigger(marker, 'click');
         }
       });
     };
 }
 
 var weatherViewModel = {
+  location: ko.observable(''),
   temp: ko.observable(''),
   humidity: ko.observable(''),
-  description: ko.observable('')
+  description: ko.observable(''),
+  url: ko.observable('')
 };
 
 
-ko.applyBindings(new appViewModel(), document.getElementById('mapView'));
+ko.applyBindings(new AppViewModel(), document.getElementById('mapView'));
 ko.applyBindings(weatherViewModel, document.getElementById('weatherView'));
