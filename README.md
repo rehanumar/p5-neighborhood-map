@@ -1,8 +1,8 @@
 # p5-neighborhood-map
 
-This project is using the MVVM design pattern to avoid spaghetti *(yum yum)* code. Specifically cares about classifying different frontend components because the standard Model, View, Whatever classification is enough to handle all components of backend apps but on frontend applications even after throwing some standard components on each of this bucket you have some of them in your hands. Anyway this project is using the knockoutJS library and google maps APIs to create a neighborhood map I would like to visit!
+This project is using knockoutJS library to implement MVVM design pattern.
 
-The live demo of this project is available [here](https://rehanumar.github.io/p5-neighborhood-map/index.html)
+The live demo of this project is available [here](https://rehanumar.github.io/p5-neighborhood-map/index.html) (it's dependent on 3rd party api's like Google Maps API and weather API)
 
 ## How to run the application
 - Download the repository as zip file in your computer or alternatively you can clone or fork it.
